@@ -9,6 +9,8 @@ public class MovimentoBola : MonoBehaviour{
 
     private Vector3 direcao;
 
+    GameManager gm;
+
     // Start is called before the first frame update
     void Start(){
         float dirX = Random.Range(-5.0f, 5.0f);
@@ -16,10 +18,15 @@ public class MovimentoBola : MonoBehaviour{
 
         direcao = new Vector3(dirX, dirY).normalized;
         
+        gm = GameManager.GetInstance();
     }
 
     // Update is called once per frame
     void Update(){
+
+        // primeira execução nas rotinas de Update() da Bola e Raquete.
+        if (gm.gameState != GameManager.GameState.GAME) return;
+        
         transform.position += direcao * Time.deltaTime * velocidade;
 
         Vector2 posicaoViewport = Camera.main.WorldToViewportPoint(transform.position);
@@ -30,6 +37,27 @@ public class MovimentoBola : MonoBehaviour{
         if( posicaoViewport.y < 0 || posicaoViewport.y > 1 ){
                 direcao = new Vector3(direcao.x, -direcao.y);
         }
+
+        if (posicaoViewport.y < 0){
+                Reset();
+        }
+
+        Debug.Log($"Vidas: {gm.vidas} \t | \t Pontos: {gm.pontos}");
+    }
+
+    private void Reset(){
+        Vector3 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+        transform.position = playerPosition + new Vector3(0, 0.5f, 0);
+
+        float dirX = Random.Range(-5.0f, 5.0f);
+        float dirY = Random.Range(2.0f, 5.0f);
+
+        direcao = new Vector3(dirX,dirY).normalized;
+        gm.vidas--;
+        
+        if(gm.vidas <= 0 && gm.gameState == GameManager.GameState.GAME){
+                gm.ChangeState(GameManager.GameState.ENDGAME);
+        }    
     }
 
     
@@ -42,6 +70,8 @@ public class MovimentoBola : MonoBehaviour{
         }
         else if(col.gameObject.CompareTag("Tijolo")){
                 direcao = new Vector3(direcao.x, -direcao.y);
+                gm.pontos++;
         }
+
   }
 }
