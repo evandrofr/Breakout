@@ -14,7 +14,7 @@ public class GameManager{
     public static ChangeStateDelegate changeStateDelegate;
 
     public void ChangeState(GameState nextState){
-        if (nextState == GameState.GAME) Reset();
+        if (nextState == GameState.MENU) Reset();
         gameState = nextState;
         changeStateDelegate();
     }

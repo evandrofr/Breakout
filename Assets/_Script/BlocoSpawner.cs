@@ -16,10 +16,10 @@ public class BlocoSpawner : MonoBehaviour{
     }
 
     void Construir(){
-        if (gm.gameState == GameManager.GameState.GAME){
-            for(int i = 0; i < 12; i++){
+        if (gm.gameState == GameManager.GameState.MENU){
+            for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 4; j++){
-                    Vector3 posicao = new Vector3(-9 + 1.55f * i, 4 - 0.55f * j);
+                    Vector3 posicao = new Vector3(-10 + 2.2f * i, 4 - 0.9f * j);
                     Instantiate(Bloco, posicao, Quaternion.identity, transform);
                 }
             }

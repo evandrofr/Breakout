@@ -42,7 +42,7 @@ public class MovimentoBola : MonoBehaviour{
                 Reset();
         }
 
-        Debug.Log($"Vidas: {gm.vidas} \t | \t Pontos: {gm.pontos}");
+        // Debug.Log($"Vidas: {gm.vidas} \t | \t Pontos: {gm.pontos}");
     }
 
     private void Reset(){
@@ -62,7 +62,16 @@ public class MovimentoBola : MonoBehaviour{
 
     
    void OnTriggerEnter2D(Collider2D col) {
+
+        
         if(col.gameObject.CompareTag("Player")){
+                // Vector2 cp = col.ClosestPoint(transform.position);
+                // dx = transform.position.x - cp.x;
+                // dy = transform.position.y - cp.y;
+
+                // float dirX = dx > 0 ?
+
+
                 float dirX = Random.Range(-5.0f, 5.0f);
                 float dirY = Random.Range(1.0f, 5.0f);
 
