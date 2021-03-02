@@ -9,12 +9,16 @@ public class MovimentoBola : MonoBehaviour{
 
     private Vector3 direcao;
 
+    public AudioClip som;
+
     GameManager gm;
+    float dirX;
+    float dirY;
 
     // Start is called before the first frame update
     void Start(){
-        float dirX = Random.Range(-5.0f, 5.0f);
-        float dirY = Random.Range(1.0f, 5.0f);
+        dirX = Random.Range(-5.0f, 5.0f);
+        dirY = Random.Range(1.0f, 5.0f);
 
         direcao = new Vector3(dirX, dirY).normalized;
         
@@ -31,12 +35,12 @@ public class MovimentoBola : MonoBehaviour{
 
         Vector2 posicaoViewport = Camera.main.WorldToViewportPoint(transform.position);
 
-        if( posicaoViewport.x < 0 || posicaoViewport.x > 1 ){
-                direcao = new Vector3(-direcao.x, direcao.y);
-        }
-        if( posicaoViewport.y < 0 || posicaoViewport.y > 1 ){
-                direcao = new Vector3(direcao.x, -direcao.y);
-        }
+        // if( posicaoViewport.x < 0 || posicaoViewport.x > 1 ){
+        //         direcao = new Vector3(-direcao.x, direcao.y);
+        // }
+        // if( posicaoViewport.y < 0 || posicaoViewport.y > 1 ){
+        //         direcao = new Vector3(direcao.x, -direcao.y);
+        // }
 
         if (posicaoViewport.y < 0){
                 Reset();
@@ -62,24 +66,27 @@ public class MovimentoBola : MonoBehaviour{
 
     
    void OnTriggerEnter2D(Collider2D col) {
-
+        AudioSource.PlayClipAtPoint(som, transform.position);
         
         if(col.gameObject.CompareTag("Player")){
-                // Vector2 cp = col.ClosestPoint(transform.position);
-                // dx = transform.position.x - cp.x;
-                // dy = transform.position.y - cp.y;
+                Vector2 cp = col.transform.position;
+                float dx = transform.position.x - cp.x;
+                float dy = transform.position.y - cp.y;
 
-                // float dirX = dx > 0 ?
+                dirX = System.Math.Abs(dx) > 0.1f ? dx*1.5f : 0;
+                dirY = Random.Range(1.0f, 5.0f);
 
-
-                float dirX = Random.Range(-5.0f, 5.0f);
-                float dirY = Random.Range(1.0f, 5.0f);
 
                 direcao = new Vector3(dirX, dirY).normalized;
         }
         else if(col.gameObject.CompareTag("Tijolo")){
                 direcao = new Vector3(direcao.x, -direcao.y);
                 gm.pontos++;
+        }
+
+        else if(col.gameObject.CompareTag("Parede")){
+                direcao = new Vector3(-direcao.x, direcao.y);
+
         }
 
   }

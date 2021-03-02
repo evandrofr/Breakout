@@ -6,6 +6,8 @@ public class MovimentoRaquete : MonoBehaviour{
 
     [Range(1,10)]
     public float velocidade;
+    public float cantoDireitoCamera;
+    public float cantoEsquerdoCamera;
 
     GameManager gm;
     // Start is called before the first frame update
@@ -25,5 +27,18 @@ public class MovimentoRaquete : MonoBehaviour{
         if(Input.GetKeyDown(KeyCode.Escape) && gm.gameState == GameManager.GameState.GAME){
             gm.ChangeState(GameManager.GameState.PAUSE);
         } 
+
+        if(transform.position.x < cantoEsquerdoCamera){
+            transform.position = new Vector2(cantoEsquerdoCamera, transform.position.y);
+        }
+        if(transform.position.x > cantoDireitoCamera){
+            transform.position = new Vector2(cantoDireitoCamera, transform.position.y);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D col) {        
+        if(col.gameObject.CompareTag("Coletavel")){
+            gm.vidas++;
+        }
     }
 }
