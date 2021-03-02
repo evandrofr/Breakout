@@ -9,6 +9,8 @@ public class MovimentoRaquete : MonoBehaviour{
     public float cantoDireitoCamera;
     public float cantoEsquerdoCamera;
 
+    public AudioClip som;
+
     GameManager gm;
     // Start is called before the first frame update
     void Start(){
@@ -38,6 +40,7 @@ public class MovimentoRaquete : MonoBehaviour{
 
     void OnTriggerEnter2D(Collider2D col) {        
         if(col.gameObject.CompareTag("Coletavel")){
+            AudioSource.PlayClipAtPoint(som, transform.position);
             gm.vidas++;
         }
     }
